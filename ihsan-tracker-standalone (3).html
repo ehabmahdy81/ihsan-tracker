@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متتبع الإحسان - المنازل السبعة</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2em;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e0e0e0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-right: 5px solid #667eea;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .question-emoji {
+            font-size: 2em;
+        }
+
+        .question-badge {
+            padding: 5px 15px;
+            background: #e8d5ff;
+            color: #6b21a8;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .question-category {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .question-text {
+            color: #333;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .answer-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+        }
+
+        .answer-btn {
+            padding: 12px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95em;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .answer-btn:hover {
+            transform: scale(1.05);
+            border-color: #667eea;
+        }
+
+        .answer-btn.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .answer-btn.excellent { border-color: #10b981; }
+        .answer-btn.good { border-color: #3b82f6; }
+        .answer-btn.fair { border-color: #f59e0b; }
+        .answer-btn.poor { border-color: #ef4444; }
+
+        .answer-btn.selected.excellent { background: #10b981; border-color: #10b981; }
+        .answer-btn.selected.good { background: #3b82f6; border-color: #3b82f6; }
+        .answer-btn.selected.fair { background: #f59e0b; border-color: #f59e0b; }
+        .answer-btn.selected.poor { background: #ef4444; border-color: #ef4444; }
+
+        .save-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.3em;
+            cursor: pointer;
+            margin-top: 30px;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .stat-emoji {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .progress-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .progress-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar-wrapper {
+            margin-bottom: 20px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .progress-bar {
+            height: 35px;
+            background: #e5e7eb;
+            border-radius: 17px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.8s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .goal-section {
+            background: #fef3c7;
+            border-right: 5px solid #f59e0b;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .goal-title {
+            font-size: 1.4em;
+            color: #92400e;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .goal-input, .goal-textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #fbbf24;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: inherit;
+        }
+
+        .goal-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .history-item {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-right: 5px solid #667eea;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .history-date {
+            color: #667eea;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .history-score {
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 1.2em;
+        }
+
+        .score-high { background: #d1fae5; color: #065f46; }
+        .score-medium { background: #fef3c7; color: #92400e; }
+        .score-low { background: #fee2e2; color: #991b1b; }
+
+        .station-scores {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #f3f4f6;
+        }
+
+        .station-score-item {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .station-score-name {
+            font-size: 0.9em;
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+        .station-score-value {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-weight: 700;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #9ca3af;
+        }
+
+        .empty-state-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .tabs {
+                padding: 15px;
+            }
+            
+            .tab {
+                padding: 10px 16px;
+                font-size: 0.9em;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .answer-options {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌙 متتبع الإحسان</h1>
+            <p>رحلتك في المنازل السبعة للإحسان</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('daily')">📅 التقييم اليومي</button>
+            <button class="tab" onclick="switchTab('weekly')">📊 التقييم الأسبوعي</button>
+            <button class="tab" onclick="switchTab('progress')">📈 التقدم</button>
+            <button class="tab" onclick="switchTab('goals')">🎯 الأهداف</button>
+            <button class="tab" onclick="switchTab('history')">📚 السجل</button>
+        </div>
+
+        <div class="content">
+            <!-- Daily Assessment -->
+            <div id="daily" class="tab-content active">
+                <h2 class="section-title">📅 التقييم اليومي - <span id="today-date"></span></h2>
+                <p style="color: #666; margin-bottom: 20px; font-size: 1.1em;">قيّم نفسك في هذه المواقف اليومية</p>
+                <div id="daily-questions"></div>
+                <button class="save-btn" onclick="saveDailyAssessment()">💾 حفظ التقييم اليومي</button>
+            </div>
+
+            <!-- Weekly Assessment -->
+            <div id="weekly" class="tab-content">
+                <h2 class="section-title">📊 التقييم الأسبوعي الشامل</h2>
+                <p style="color: #666; margin-bottom: 20px; font-size: 1.1em;">راجع أداءك في جميع المنازل خلال الأسبوع</p>
+                <div id="weekly-assessment"></div>
+                <button class="save-btn" onclick="saveWeeklyAssessment()">💾 حفظ التقييم الأسبوعي</button>
+            </div>
+
+            <!-- Progress -->
+            <div id="progress" class="tab-content">
+                <h2 class="section-title">📈 التقدم والإحصائيات</h2>
+                <div class="stats-grid" id="stats-container"></div>
+                <div class="progress-section">
+                    <div class="progress-title">📊 مستواك في كل منزلة</div>
+                    <div id="progress-bars"></div>
+                </div>
+            </div>
+
+            <!-- Goals -->
+            <div id="goals" class="tab-content">
+                <h2 class="section-title">🎯 الأهداف والخطط</h2>
+                
+                <div class="goal-section">
+                    <div class="goal-title">📌 هدف الأسبوع الحالي</div>
+                    <input type="text" class="goal-input" id="weekly-goal" 
+                           placeholder="مثال: سأغض بصري ولن أنظر لامرأة أجنبية عمدًا">
+                    <p style="color: #92400e; margin-top: 10px;">💡 اختر منزلة واحدة وضع هدفًا واضحًا ومحددًا</p>
+                </div>
+
+                <div id="station-goals"></div>
+
+                <div class="goal-section" style="background: #dbeafe; border-right-color: #3b82f6;">
+                    <div class="goal-title" style="color: #1e40af;">📝 ملاحظاتي وتأملاتي</div>
+                    <textarea class="goal-textarea" id="personal-notes" 
+                              placeholder="سجل هنا المواقف المهمة، ما تعلمته، التحديات التي واجهتها..."
+                              style="border-color: #60a5fa;"></textarea>
+                </div>
+
+                <button class="save-btn" onclick="saveGoals()">💾 حفظ الأهداف</button>
+            </div>
+
+            <!-- History -->
+            <div id="history" class="tab-content">
+                <h2 class="section-title">📚 السجل التاريخي</h2>
+                <div id="history-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const stations = [
+            {
+                name: 'التقوى',
+                emoji: '🕌',
+                categories: [
+                    {
+                        title: 'في العمل والكسب',
+                        questions: [
+                            'عندما تأخرت عن العمل، هل كتبت في سجل الحضور وقت وصولك الحقيقي؟',
+                            'عندما استخدمت طابعة الشركة لطباعة أوراق شخصية، هل شعرت بتأنيب الضمير؟',
+                            'عندما عرض عليك المورّد هدية مقابل التعاقد معه، هل رفضتها؟',
+                            'عندما أعطاك الكاشير فكّة زيادة بالخطأ، هل أرجعتها؟'
+                        ]
+                    },
+                    {
+                        title: 'البصر والشهوة',
+                        questions: [
+                            'اليوم في الطريق للعمل، هل غضضت بصرك عن النظر للنساء؟',
+                            'عندما دخلت زميلة العمل بدون حجاب، هل غضضت بصرك؟',
+                            'عندما فتحت الإنترنت بمفردك، هل تجنبت المواقع المحرمة؟',
+                            'عندما عرض عليك صديقك فيلمًا به مشاهد خادشة، هل رفضت؟'
+                        ]
+                    },
+                    {
+                        title: 'الصلاة اليومية',
+                        questions: [
+                            'صلاة الفجر اليوم، هل صليتها في وقتها في المسجد؟',
+                            'صلاة الظهر، هل صليتها مع الجماعة؟',
+                            'عندما حان وقت العصر وأنت في اجتماع مهم، هل اعتذرت للصلاة؟',
+                            'في آخر جمعة، هل ذهبت للمسجد مبكرًا؟'
+                        ]
+                    },
+                    {
+                        title: 'في البيت',
+                        questions: [
+                            'عندما سمعت ابنك/بنتك يشاهد محتوى غير مناسب، هل أوقفته؟',
+                            'عندما رأيت زوجتك بحجاب غير ساتر، هل نصحتها بلطف؟',
+                            'هل تتأكد من أن محتوى البيت (تلفزيون، إنترنت) حلال؟',
+                            'هل تقود أسرتك للصلاة والعبادة؟'
+                        ]
+                    }
+                ]
+            },
+            {
+                name: 'اليقين',
+                emoji: '💎',
+                categories: [
+                    {
+                        title: 'اليقين بالرزق',
+                        questions: [
+                            'عندما عُرض عليك مشروع مربح لكن به شبهة، هل رفضته ثقة بأن الله سيرزقك؟',
+                            'عندما تأخر راتبك، هل توكلت على الله أم قلقت كثيرًا؟',
+                            'عندما فكرت في الزواج أو الإنفاق، هل توقفت خوفًا من الفقر؟',
+                            'عندما أردت التصدق بمبلغ كبير، هل تصدقت واثقًا أن الله سيخلفه؟'
+                        ]
+                    },
+                    {
+                        title: 'اليقين بالآخرة',
+                        questions: [
+                            'في آخر جنازة حضرتها، هل تذكرت موتك وراجعت أعمالك؟',
+                            'هل لديك وصية مكتوبة جاهزة؟',
+                            'عندما عُرضت عليك صفقة محرمة مربحة، هل تذكرت الحساب؟',
+                            'عندما سمعت آية عن الجنة، هل اشتقت لها حقًا؟'
+                        ]
+                    },
+                    {
+                        title: 'اليقين بالقدر',
+                        questions: [
+                            'هل تؤمن حقًا أن ما أصابك لم يكن ليخطئك؟',
+                            'عندما فاتتك فرصة، هل ندمت كثيرًا أم آمنت بحكمة الله؟',
+                            'هل تقلق على المستقبل أم تثق بتدبير الله؟',
+                            'هل تخاف من المرض والموت أم تستعد لهما بالعمل الصالح؟'
+                        ]
+                    }
+                ]
+            },
+            {
+                name: 'التوكل',
+                emoji: '🤲',
+                categories: [
+                    {
+                        title: 'التوكل في الرزق',
+                        questions: [
+                            'عندما تستيقظ صباحًا، هل تفكر في الله قبل التفكير في المال؟',
+                            'عندما تقدمت لوظيفة أو مشروع، هل نمت مطمئنًا بعد الدعاء؟',
+                            'عندما تعطلت سيارتك في موعد مهم، هل توكلت أم قلقت؟',
+                            'عندما مرض ابنك، هل ذهبت للطبيب متوكلًا على الله؟'
+                        ]
+                    },
+                    {
+                        title: 'التوكل عند المشاكل',
+                        questions: [
+                            'في آخر أزمة مالية، هل دعوت الله قبل الاتصال بالناس؟',
+                            'عندما خسرت صفقة كبيرة، هل قلت "عسى أن يكون خيرًا"؟',
+                            'هل تخطط للمستقبل متوكلًا على الله أم معتمدًا على المال فقط؟',
+                            'عندما واجهت مشكلة، هل لجأت لله أولًا؟'
+                        ]
+                    }
+                ]
+            },
+            {
+                name: 'التسليم',
+                emoji: '🙏',
+                categories: [
+                    {
+                        title: 'التسليم لأوامر الله',
+                        questions: [
+                            'عندما استيقظت لصلاة الفجر متعبًا، هل قلت "سمعًا وطاعة"؟',
+                            'في آخر رمضان بسفر شاق، هل صمت مسلّمًا؟',
+                            'عندما قرأت فتوى تحرم شيئًا تحبه، هل توقفت فورًا؟',
+                            'عندما أُمرت بالإنفاق على والديك، هل أنفقت بسخاء؟'
+                        ]
+                    },
+                    {
+                        title: 'التسليم في المصائب',
+                        questions: [
+                            'عندما أُصبت بمرض، هل قلت "الحمد لله" من قلبك؟',
+                            'في آخر مرة فاتتك ترقية، هل سلّمت لقدر الله؟',
+                            'عندما اختلفت مع زوجتك بشدة، هل صبرت مسلّمًا؟',
+                            'عندما تأخر الإنجاب، هل رضيت بقضاء الله؟'
+                        ]
+                    }
+                ]
+            },
+            {
+                name: 'الرضا',
+                emoji: '😊',
+                categories: [
+                    {
+                        title: 'الرضا بالرزق',
+                        questions: [
+                            'عندما رأيت سيارة زميلك الفارهة، هل شعرت بالحسد؟',
+                            'في آخر عزومة عند صديق ثري، هل رجعت راضيًا عن حالك؟',
+                            'عندما قارنت راتبك براتب زميلك، هل رضيت؟',
+                            'عندما طلبت زوجتك أثاثًا جديدًا، هل قابلت الطلب بصدر رحب؟'
+                        ]
+                    },
+                    {
+                        title: 'الرضا بالمقدور',
+                        questions: [
+                            'عندما نظرت في المرآة، هل رضيت عن شكلك؟',
+                            'في آخر فحص طبي، هل قلت "الحمد لله" على صحتك؟',
+                            'عندما قارنت قدراتك بغيرك، هل رضيت عن نفسك؟',
+                            'عندما تذكرت فرصة فاتت، هل رضيت بقدر الله؟'
+                        ]
+                    },
+                    {
+                        title: 'الرضا عن الأهل',
+                        questions: [
+                            'هل تنظر لزوجتك بامتنان وشكر لله؟',
+                            'عندما قارنت ابنك بابن جارك، هل حزنت أم شكرت الله؟',
+                            'هل ترضى عن أسرتك رغم عيوبها؟',
+                            'هل تشكر الله على نعمة الأولاد؟'
+                        ]
+                    }
+                ]
+            },
+            {
+                name: 'العبودية',
+                emoji: '🕋',
+                categories: [
+                    {
+                        title: 'استشعار العبودية',
+                        questions: [
+                            'هل تعمل لأجل الراتب فقط أم لأن الله أمرك بالإتقان؟',
+                            'عندما أنجزت عملًا ممتازًا، هل حمدت الله أم فخرت بنفسك؟',
+                            'عندما أحسنت لزبون، هل قصدت بذلك وجه الله؟',
+                            'عندما نصحت زميلك، هل أردت مصلحته في الله؟'
+                        ]
+                    },
+                    {
+                        title: 'في العبادات',
+                        questions: [
+                            'عندما صليت اليوم، هل كان قلبك حاضرًا خاشعًا؟',
+                            'في آخر قراءة قرآن، كم صفحة قرأتها بتدبر؟',
+                            'عندما ذكرت الله، هل استشعرت المعنى؟',
+                            'في آخر صدقة، هل أعطيتها لوجه الله فقط؟'
+                        ]
+                    },
+                    {
+                        title: 'الخضوع والذل',
+                        questions: [
+                            'في آخر سجدة، هل شعرت بالذل الحقيقي أمام الله؟',
+                            'متى آخر مرة بكيت من خشية الله؟',
+                            'عندما تخلو بنفسك، هل تستحي من الله؟',
+                            'في آخر دعاء، هل شعرت بالافتقار الحقيقي لله؟'
+                        ]
+                    }
+                ]
+            },
+            {
+                name: 'محبة الله',
+                emoji: '❤️',
+                categories: [
+                    {
+                        title: 'علامات المحبة',
+                        questions: [
+                            'عندما خيّرت بين متعة ومعصية، ماذا اخترت؟',
+                            'عندما عُرضت عليك صفقة مربحة محرمة، هل رفضتها حبًا لله؟',
+                            'هل تفضّل مرضاة الله على هواك دائمًا؟',
+                            'هل تشتاق للعبادة والصلاة؟'
+                        ]
+                    },
+                    {
+                        title: 'الاشتياق والشوق',
+                        questions: [
+                            'كم مرة اشتقت للصلاة هذا الأسبوع؟',
+                            'في آخر سفر، هل اشتقت للمسجد والجماعة؟',
+                            'عندما تفكر في الموت، هل تفرح بلقاء الله؟',
+                            'هل تنتظر رمضان بشوق حقيقي؟'
+                        ]
+                    },
+                    {
+                        title: 'الغيرة على محارم الله',
+                        questions: [
+                            'في آخر مرة رأيت معصية، هل أنكرتها؟',
+                            'عندما سمعت من يسب الدين، هل دافعت عنه؟',
+                            'عندما انتشر محتوى محرم، هل حذفته فورًا؟',
+                            'هل تتألم لانتشار المعاصي؟'
+                        ]
+                    },
+                    {
+                        title: 'التضحية',
+                        questions: [
+                            'كم ساعة أعطيت من وقتك للدعوة إلى الله الشهر الماضي؟',
+                            'كم تبرعت في سبيل الله الشهر الماضي؟',
+                            'عندما طُلب منك ترك عادة تحبها لله، هل تركتها؟',
+                            'هل تضحي بوقتك ومالك في سبيل الله؟'
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        let dailyData = {};
+        let weeklyData = {};
+        let goalsData = {};
+        let historyData = [];
+
+        // Load data from localStorage
+        function loadData() {
+            try {
+                dailyData = JSON.parse(localStorage.getItem('ihsan-daily') || '{}');
+                weeklyData = JSON.parse(localStorage.getItem('ihsan-weekly') || '{}');
+                goalsData = JSON.parse(localStorage.getItem('ihsan-goals') || '{}');
+                historyData = JSON.parse(localStorage.getItem('ihsan-history') || '[]');
+            } catch (e) {
+                console.error('Error loading data:', e);
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('ihsan-daily', JSON.stringify(dailyData));
+            localStorage.setItem('ihsan-weekly', JSON.stringify(weeklyData));
+            localStorage.setItem('ihsan-goals', JSON.stringify(goalsData));
+            localStorage.setItem('ihsan-history', JSON.stringify(historyData));
+        }
+
+        function getTodayKey() {
+            const today = new Date();
+            return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+        }
+
+        function getWeekKey() {
+            const now = new Date();
+            const startOfYear = new Date(now.getFullYear(), 0, 1);
+            const days = Math.floor((now - startOfYear) / (24 * 60 * 60 * 1000));
+            const weekNumber = Math.ceil(days / 7);
+            return `${now.getFullYear()}-W${weekNumber}`;
+        }
+
+        function generateDailyQuestions() {
+            const allQuestions = [];
+            stations.forEach(station => {
+                station.categories.forEach(category => {
+                    category.questions.forEach(question => {
+                        allQuestions.push({
+                            station: station.name,
+                            emoji: station.emoji,
+                            category: category.title,
+                            question: question
+                        });
+                    });
+                });
+            });
+            
+            allQuestions.sort(() => Math.random() - 0.5);
+            return allQuestions.slice(0, 10);
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+            
+            if (tabName === 'progress') {
+                renderProgress();
+            } else if (tabName === 'history') {
+                renderHistory();
+            } else if (tabName === 'goals') {
+                renderGoals();
+            }
+        }
+
+        function renderDailyQuestions() {
+            const today = getTodayKey();
+            
+            if (!dailyData[today]) {
+                dailyData[today] = {
+                    questions: generateDailyQuestions(),
+                    answers: {}
+                };
+                saveData();
+            }
+            
+            const container = document.getElementById('daily-questions');
+            const questions = dailyData[today].questions;
+            
+            container.innerHTML = questions.map((item, index) => `
+                <div class="question-card">
+                    <div class="question-header">
+                        <span class="question-emoji">${item.emoji}</span>
+                        <span class="question-badge">${item.station}</span>
+                        <span class="question-category">${item.category}</span>
+                    </div>
+                    <div class="question-text">${item.question}</div>
+                    <div class="answer-options">
+                        ${[
+                            { score: 5, label: '✅ فعلت الصواب', points: '(5 نقاط)', class: 'excellent' },
+                            { score: 3, label: '🔶 بصعوبة', points: '(3 نقاط)', class: 'good' },
+                            { score: 2, label: '⚠️ خطأ وندمت', points: '(2 نقطة)', class: 'fair' },
+                            { score: 0, label: '❌ لم أبالِ', points: '(0 نقطة)', class: 'poor' }
+                        ].map(opt => `
+                            <button class="answer-btn ${opt.class} ${dailyData[today].answers[index] === opt.score ? 'selected' : ''}"
+                                    onclick="selectDailyAnswer(${index}, ${opt.score})">
+                                ${opt.label}<br><small>${opt.points}</small>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function selectDailyAnswer(questionIndex, score) {
+            const today = getTodayKey();
+            dailyData[today].answers[questionIndex] = score;
+            saveData();
+            renderDailyQuestions();
+        }
+
+        function renderWeeklyAssessment() {
+            const container = document.getElementById('weekly-assessment');
+            const weekKey = getWeekKey();
+            
+            if (!weeklyData[weekKey]) {
+                weeklyData[weekKey] = {};
+            }
+            
+            container.innerHTML = stations.map((station, stationIndex) => `
+                <div class="question-card" style="margin-bottom: 30px;">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
+                        <span style="font-size: 3em;">${station.emoji}</span>
+                        <h3 style="font-size: 1.8em; color: #667eea; font-weight: 700;">${station.name}</h3>
+                    </div>
+                    ${station.categories.map((category, catIndex) => `
+                        <div style="margin-bottom: 25px;">
+                            <h4 style="color: #764ba2; margin-bottom: 15px; font-size: 1.2em; font-weight: 600;">
+                                ${category.title}
+                            </h4>
+                            ${category.questions.map((question, qIndex) => {
+                                const key = `${stationIndex}-${catIndex}-${qIndex}`;
+                                return `
+                                    <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 12px;">
+                                        <p style="color: #333; margin-bottom: 12px; font-size: 1.05em;">${question}</p>
+                                        <div class="answer-options">
+                                            ${[
+                                                { score: 5, label: '✅ دائمًا', class: 'excellent' },
+                                                { score: 3, label: '🔶 غالبًا', class: 'good' },
+                                                { score: 2, label: '⚠️ أحيانًا', class: 'fair' },
+                                                { score: 0, label: '❌ نادرًا', class: 'poor' }
+                                            ].map(opt => `
+                                                <button class="answer-btn ${opt.class} ${weeklyData[weekKey][key] === opt.score ? 'selected' : ''}"
+                                                        onclick="selectWeeklyAnswer('${key}', ${opt.score})">
+                                                    ${opt.label}<br><small>(${opt.score})</small>
+                                                </button>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    `).join('')}
+                </div>
+            `).join('');
+        }
+
+        function selectWeeklyAnswer(key, score) {
+            const weekKey = getWeekKey();
+            weeklyData[weekKey][key] = score;
+            saveData();
+            renderWeeklyAssessment();
+        }
+
+        function saveDailyAssessment() {
+            const today = getTodayKey();
+            const answers = dailyData[today]?.answers || {};
+            const answeredCount = Object.keys(answers).length;
+            
+            if (answeredCount === 0) {
+                alert('⚠️ من فضلك أجب على بعض الأسئلة أولًا');
+                return;
+            }
+            
+            const totalScore = Object.values(answers).reduce((sum, score) => sum + score, 0);
+            const maxScore = answeredCount * 5;
+            const percentage = Math.round((totalScore / maxScore) * 100);
+            
+            historyData.unshift({
+                date: new Date().toLocaleDateString('ar-EG'),
+                type: 'daily',
+                score: percentage,
+                totalQuestions: answeredCount,
+                timestamp: Date.now()
+            });
+            
+            if (historyData.length > 30) {
+                historyData = historyData.slice(0, 30);
+            }
+            
+            saveData();
+            
+            alert(`✅ تم حفظ تقييمك اليومي!\n\nنتيجتك: ${percentage}%\n\n${
+                percentage >= 80 ? '🌟 ممتاز! بارك الله فيك' :
+                percentage >= 60 ? '👍 جيد، واصل التحسن' :
+                percentage >= 40 ? '💪 هناك مجال للتحسين' :
+                '📚 ابدأ بخطوات صغيرة وستتحسن بإذن الله'
+            }`);
+        }
+
+        function saveWeeklyAssessment() {
+            const weekKey = getWeekKey();
+            const answers = weeklyData[weekKey] || {};
+            const answeredCount = Object.keys(answers).length;
+            
+            if (answeredCount === 0) {
+                alert('⚠️ من فضلك أجب على بعض الأسئلة أولًا');
+                return;
+            }
+            
+            const totalScore = Object.values(answers).reduce((sum, score) => sum + score, 0);
+            const maxScore = answeredCount * 5;
+            const percentage = Math.round((totalScore / maxScore) * 100);
+            
+            const stationScores = {};
+            stations.forEach((station, stationIndex) => {
+                let stationTotal = 0;
+                let stationQuestions = 0;
+                
+                station.categories.forEach((category, catIndex) => {
+                    category.questions.forEach((question, qIndex) => {
+                        const key = `${stationIndex}-${catIndex}-${qIndex}`;
+                        if (answers[key] !== undefined) {
+                            stationTotal += answers[key];
+                            stationQuestions++;
+                        }
+                    });
+                });
+                
+                if (stationQuestions > 0) {
+                    stationScores[station.name] = Math.round((stationTotal / (stationQuestions * 5)) * 100);
+                }
+            });
+            
+            historyData.unshift({
+                date: new Date().toLocaleDateString('ar-EG'),
+                type: 'weekly',
+                score: percentage,
+                stationScores: stationScores,
+                totalQuestions: answeredCount,
+                timestamp: Date.now()
+            });
+            
+            if (historyData.length > 30) {
+                historyData = historyData.slice(0, 30);
+            }
+            
+            saveData();
+            
+            const sortedStations = Object.entries(stationScores).sort((a, b) => a[1] - b[1]);
+            const weakest = sortedStations[0] || ['', 0];
+            
+            alert(`✅ تم حفظ تقييمك الأسبوعي!\n\nنتيجتك الإجمالية: ${percentage}%\n\nالمنزلة الأضعف: ${weakest[0]} (${weakest[1]}%)\n\n💡 ركز على تحسين هذه المنزلة الأسبوع القادم`);
+        }
+
+        function calculateProgress() {
+            const stationAverages = {};
+            
+            stations.forEach(station => {
+                stationAverages[station.name] = [];
+            });
+
+            historyData.forEach(record => {
+                if (record.stationScores) {
+                    Object.entries(record.stationScores).forEach(([station, score]) => {
+                        if (stationAverages[station]) {
+                            stationAverages[station].push(score);
+                        }
+                    });
+                }
+            });
+
+            const result = {};
+            Object.entries(stationAverages).forEach(([station, scores]) => {
+                if (scores.length > 0) {
+                    result[station] = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+                } else {
+                    result[station] = 0;
+                }
+            });
+
+            return result;
+        }
+
+        function renderProgress() {
+            const progress = calculateProgress();
+            const allScores = historyData.map(h => h.score);
+            const avgScore = allScores.length > 0 ? Math.round(allScores.reduce((a, b) => a + b, 0) / allScores.length) : 0;
+            
+            const sortedStations = Object.entries(progress).sort((a, b) => b[1] - a[1]);
+            const strongest = sortedStations[0] || ['-', 0];
+            const weakest = sortedStations[sortedStations.length - 1] || ['-', 0];
+            
+            // Stats
+            document.getElementById('stats-container').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-emoji">📅</div>
+                    <div class="stat-value">${historyData.length}</div>
+                    <div class="stat-label">أيام التقييم</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-emoji">📊</div>
+                    <div class="stat-value">${avgScore}%</div>
+                    <div class="stat-label">متوسط الأداء</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-emoji">⭐</div>
+                    <div class="stat-value" style="font-size: 1.5em;">${strongest[0]}</div>
+                    <div class="stat-label">أقوى منزلة</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-emoji">💪</div>
+                    <div class="stat-value" style="font-size: 1.5em;">${weakest[0]}</div>
+                    <div class="stat-label">تحتاج تحسين</div>
+                </div>
+            `;
+            
+            // Progress bars
+            document.getElementById('progress-bars').innerHTML = Object.entries(progress).map(([station, score]) => `
+                <div class="progress-bar-wrapper">
+                    <div class="progress-label">
+                        <span>${station}</span>
+                        <span>${score}%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${score}%">
+                            ${score > 15 ? score + '%' : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderGoals() {
+            document.getElementById('weekly-goal').value = goalsData.weeklyGoal || '';
+            document.getElementById('personal-notes').value = goalsData.notes || '';
+            
+            document.getElementById('station-goals').innerHTML = stations.map((station, index) => `
+                <div class="goal-section">
+                    <div class="goal-title">${station.emoji} خطة ${station.name}</div>
+                    <textarea class="goal-textarea" id="goal-${index}" 
+                              placeholder="اكتب خطتك لتحسين هذه المنزلة...">${goalsData[station.name] || ''}</textarea>
+                </div>
+            `).join('');
+        }
+
+        function saveGoals() {
+            goalsData = {
+                weeklyGoal: document.getElementById('weekly-goal').value,
+                notes: document.getElementById('personal-notes').value
+            };
+            
+            stations.forEach((station, index) => {
+                const textarea = document.getElementById(`goal-${index}`);
+                if (textarea && textarea.value) {
+                    goalsData[station.name] = textarea.value;
+                }
+            });
+            
+            saveData();
+            alert('✅ تم حفظ أهدافك بنجاح!');
+        }
+
+        function renderHistory() {
+            const container = document.getElementById('history-list');
+            
+            if (historyData.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📚</div>
+                        <h3 style="margin-bottom: 10px; font-size: 1.5em;">لا توجد سجلات بعد</h3>
+                        <p style="font-size: 1.1em;">ابدأ بتقييم نفسك يوميًا!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = historyData.map(record => {
+                const scoreClass = record.score >= 70 ? 'score-high' : record.score >= 40 ? 'score-medium' : 'score-low';
+                
+                return `
+                    <div class="history-item">
+                        <div class="history-header">
+                            <div>
+                                <div class="history-date">📅 ${record.date}</div>
+                                <div style="color: #666; margin-top: 5px;">
+                                    ${record.type === 'daily' ? 'تقييم يومي' : 'تقييم أسبوعي'} - ${record.totalQuestions} سؤال
+                                </div>
+                            </div>
+                            <div class="history-score ${scoreClass}">${record.score}%</div>
+                        </div>
+                        ${record.stationScores ? `
+                            <div class="station-scores">
+                                ${Object.entries(record.stationScores).map(([station, score]) => `
+                                    <div class="station-score-item">
+                                        <div class="station-score-name">${station}</div>
+                                        <div class="station-score-value">${score}%</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Initialize
+        loadData();
+        
+        document.getElementById('today-date').textContent = new Date().toLocaleDateString('ar-EG', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        renderDailyQuestions();
+        renderWeeklyAssessment();
+        renderGoals();
+    </script>
+</body>
+</html>

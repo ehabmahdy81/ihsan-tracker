@@ -169,47 +169,82 @@
             margin-bottom: 15px;
         }
 
-        .answer-options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 10px;
+        .answer-slider-container {
+            margin: 20px 0;
         }
 
-        .answer-btn {
-            padding: 12px;
-            border: 2px solid #ddd;
-            background: white;
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .slider-value-display {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 10px;
+        }
+
+        .answer-slider {
+            width: 100%;
+            height: 12px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: linear-gradient(90deg, #ef4444 0%, #f59e0b 25%, #3b82f6 50%, #10b981 75%, #10b981 100%);
+            outline: none;
             border-radius: 10px;
             cursor: pointer;
+        }
+
+        .answer-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 30px;
+            height: 30px;
+            background: white;
+            border: 4px solid #667eea;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
             transition: all 0.2s;
-            font-size: 0.95em;
-            text-align: center;
-            font-weight: 600;
-            -webkit-user-select: none;
-            user-select: none;
         }
 
-        .answer-btn:active {
-            transform: scale(0.95);
+        .answer-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.5);
         }
 
-        .answer-btn.selected {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-color: #667eea;
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        .answer-slider::-moz-range-thumb {
+            width: 30px;
+            height: 30px;
+            background: white;
+            border: 4px solid #667eea;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            transition: all 0.2s;
         }
 
-        .answer-btn.excellent { border-color: #10b981; }
-        .answer-btn.good { border-color: #3b82f6; }
-        .answer-btn.fair { border-color: #f59e0b; }
-        .answer-btn.poor { border-color: #ef4444; }
+        .answer-slider::-moz-range-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.5);
+        }
 
-        .answer-btn.selected.excellent { background: #10b981; border-color: #10b981; }
-        .answer-btn.selected.good { background: #3b82f6; border-color: #3b82f6; }
-        .answer-btn.selected.fair { background: #f59e0b; border-color: #f59e0b; }
-        .answer-btn.selected.poor { background: #ef4444; border-color: #ef4444; }
+        .slider-markers {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            padding: 0 15px;
+            font-size: 0.8em;
+            color: #999;
+        }
 
         .save-btn {
             width: 100%;
@@ -779,41 +814,43 @@
                 }
             });
 
-            container.innerHTML = questions.map((q, index) => `
-                <div class="question-card">
-                    <div class="question-header">
-                        <span class="question-emoji">${q.emoji}</span>
-                        <div style="flex: 1;">
-                            <div class="question-badge">${q.station}</div>
-                            <div class="question-text">${q.text}</div>
+            container.innerHTML = questions.map((q, index) => {
+                const currentValue = dailyData[index] || 50;
+                return `
+                    <div class="question-card">
+                        <div class="question-header">
+                            <span class="question-emoji">${q.emoji}</span>
+                            <div style="flex: 1;">
+                                <div class="question-badge">${q.station}</div>
+                                <div class="question-text">${q.text}</div>
+                            </div>
+                        </div>
+                        <div class="answer-slider-container">
+                            <div class="slider-value-display" id="daily-value-${index}">${currentValue}%</div>
+                            <input type="range" 
+                                   min="0" 
+                                   max="100" 
+                                   value="${currentValue}" 
+                                   class="answer-slider" 
+                                   id="daily-slider-${index}"
+                                   oninput="updateDailySlider(${index}, this.value)">
+                            <div class="slider-markers">
+                                <span>0%</span>
+                                <span>25%</span>
+                                <span>50%</span>
+                                <span>75%</span>
+                                <span>100%</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="answer-options">
-                        <button class="answer-btn excellent ${dailyData[index] === 5 ? 'selected' : ''}" 
-                                onclick="selectDailyAnswer(${index}, 5)">
-                            ممتاز<br>100%
-                        </button>
-                        <button class="answer-btn good ${dailyData[index] === 4 ? 'selected' : ''}" 
-                                onclick="selectDailyAnswer(${index}, 4)">
-                            جيد<br>75%
-                        </button>
-                        <button class="answer-btn fair ${dailyData[index] === 3 ? 'selected' : ''}" 
-                                onclick="selectDailyAnswer(${index}, 3)">
-                            متوسط<br>50%
-                        </button>
-                        <button class="answer-btn poor ${dailyData[index] === 2 ? 'selected' : ''}" 
-                                onclick="selectDailyAnswer(${index}, 2)">
-                            ضعيف<br>25%
-                        </button>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
-        function selectDailyAnswer(questionIndex, score) {
-            dailyData[questionIndex] = score;
+        function updateDailySlider(questionIndex, value) {
+            dailyData[questionIndex] = parseInt(value);
+            document.getElementById(`daily-value-${questionIndex}`).textContent = value + '%';
             saveData();
-            renderDailyQuestions();
         }
 
         // Render weekly assessment
@@ -831,26 +868,26 @@
                             <div class="category-title">${category.name}</div>
                             ${category.questions.map((question, qIndex) => {
                                 const key = `${stationIndex}-${catIndex}-${qIndex}`;
+                                const currentValue = weeklyData[key] || 50;
                                 return `
                                     <div class="question-card">
                                         <div class="question-text">${question}</div>
-                                        <div class="answer-options">
-                                            <button class="answer-btn excellent ${weeklyData[key] === 5 ? 'selected' : ''}" 
-                                                    onclick="selectWeeklyAnswer('${key}', 5)">
-                                                ممتاز<br>100%
-                                            </button>
-                                            <button class="answer-btn good ${weeklyData[key] === 4 ? 'selected' : ''}" 
-                                                    onclick="selectWeeklyAnswer('${key}', 4)">
-                                                جيد<br>75%
-                                            </button>
-                                            <button class="answer-btn fair ${weeklyData[key] === 3 ? 'selected' : ''}" 
-                                                    onclick="selectWeeklyAnswer('${key}', 3)">
-                                                متوسط<br>50%
-                                            </button>
-                                            <button class="answer-btn poor ${weeklyData[key] === 2 ? 'selected' : ''}" 
-                                                    onclick="selectWeeklyAnswer('${key}', 2)">
-                                                ضعيف<br>25%
-                                            </button>
+                                        <div class="answer-slider-container">
+                                            <div class="slider-value-display" id="weekly-value-${key}">${currentValue}%</div>
+                                            <input type="range" 
+                                                   min="0" 
+                                                   max="100" 
+                                                   value="${currentValue}" 
+                                                   class="answer-slider" 
+                                                   id="weekly-slider-${key}"
+                                                   oninput="updateWeeklySlider('${key}', this.value)">
+                                            <div class="slider-markers">
+                                                <span>0%</span>
+                                                <span>25%</span>
+                                                <span>50%</span>
+                                                <span>75%</span>
+                                                <span>100%</span>
+                                            </div>
                                         </div>
                                     </div>
                                 `;
@@ -861,10 +898,10 @@
             `).join('');
         }
 
-        function selectWeeklyAnswer(key, score) {
-            weeklyData[key] = score;
+        function updateWeeklySlider(key, value) {
+            weeklyData[key] = parseInt(value);
+            document.getElementById(`weekly-value-${key}`).textContent = value + '%';
             saveData();
-            renderWeeklyAssessment();
         }
 
         function saveDailyAssessment() {
@@ -876,8 +913,7 @@
             }
             
             const totalScore = Object.values(dailyData).reduce((sum, score) => sum + score, 0);
-            const maxScore = answeredCount * 5;
-            const percentage = Math.round((totalScore / maxScore) * 100);
+            const percentage = Math.round(totalScore / answeredCount);
             
             historyData.unshift({
                 date: new Date().toLocaleDateString('ar-EG'),
@@ -912,8 +948,7 @@
             }
             
             const totalScore = Object.values(answers).reduce((sum, score) => sum + score, 0);
-            const maxScore = answeredCount * 5;
-            const percentage = Math.round((totalScore / maxScore) * 100);
+            const percentage = Math.round(totalScore / answeredCount);
             
             const stationScores = {};
             stations.forEach((station, stationIndex) => {
@@ -931,7 +966,7 @@
                 });
                 
                 if (stationQuestions > 0) {
-                    stationScores[station.name] = Math.round((stationTotal / (stationQuestions * 5)) * 100);
+                    stationScores[station.name] = Math.round(stationTotal / stationQuestions);
                 }
             });
             

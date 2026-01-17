@@ -817,6 +817,8 @@
 
             container.innerHTML = questions.map((q, index) => {
                 const currentValue = dailyData[index] || 50;
+                // Invert the slider position: if value is 80%, slider should be at 20
+                const sliderPosition = 100 - currentValue;
                 return `
                     <div class="question-card">
                         <div class="question-header">
@@ -831,7 +833,7 @@
                             <input type="range" 
                                    min="0" 
                                    max="100" 
-                                   value="${currentValue}" 
+                                   value="${sliderPosition}" 
                                    class="answer-slider" 
                                    id="daily-slider-${index}"
                                    oninput="updateDailySlider(${index}, this.value)">
@@ -849,8 +851,10 @@
         }
 
         function updateDailySlider(questionIndex, value) {
-            dailyData[questionIndex] = parseInt(value);
-            document.getElementById(`daily-value-${questionIndex}`).textContent = value + '%';
+            // Invert value for RTL: when slider moves left (towards 100 visually), value should increase
+            const invertedValue = 100 - parseInt(value);
+            dailyData[questionIndex] = invertedValue;
+            document.getElementById(`daily-value-${questionIndex}`).textContent = invertedValue + '%';
             saveData();
         }
 
@@ -870,6 +874,8 @@
                             ${category.questions.map((question, qIndex) => {
                                 const key = `${stationIndex}-${catIndex}-${qIndex}`;
                                 const currentValue = weeklyData[key] || 50;
+                                // Invert the slider position: if value is 80%, slider should be at 20
+                                const sliderPosition = 100 - currentValue;
                                 return `
                                     <div class="question-card">
                                         <div class="question-text">${question}</div>
@@ -878,7 +884,7 @@
                                             <input type="range" 
                                                    min="0" 
                                                    max="100" 
-                                                   value="${currentValue}" 
+                                                   value="${sliderPosition}" 
                                                    class="answer-slider" 
                                                    id="weekly-slider-${key}"
                                                    oninput="updateWeeklySlider('${key}', this.value)">
@@ -900,8 +906,10 @@
         }
 
         function updateWeeklySlider(key, value) {
-            weeklyData[key] = parseInt(value);
-            document.getElementById(`weekly-value-${key}`).textContent = value + '%';
+            // Invert value for RTL: when slider moves left (towards 100 visually), value should increase
+            const invertedValue = 100 - parseInt(value);
+            weeklyData[key] = invertedValue;
+            document.getElementById(`weekly-value-${key}`).textContent = invertedValue + '%';
             saveData();
         }
 

@@ -75,38 +75,6 @@
             font-size: 1em;
         }
 
-
-        .language-switcher {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            display: flex;
-            gap: 5px;
-            z-index: 1000;
-        }
-
-        .lang-btn {
-            background: rgba(255,255,255,0.3);
-            color: white;
-            border: 2px solid rgba(255,255,255,0.5);
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s;
-            font-size: 0.85em;
-        }
-
-        .lang-btn:hover {
-            background: rgba(255,255,255,0.5);
-        }
-
-        .lang-btn.active {
-            background: white;
-            color: #667eea;
-            border-color: white;
-        }
-
         .tabs {
             display: flex;
             gap: 5px;
@@ -550,13 +518,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="header" style="position: relative;">
-            <div class="language-switcher">
-                <button class="lang-btn active" onclick="changeLanguage('ar')" data-lang="ar">ع</button>
-                <button class="lang-btn" onclick="changeLanguage('en')" data-lang="en">EN</button>
-                <button class="lang-btn" onclick="changeLanguage('fr')" data-lang="fr">FR</button>
-            </div>
-
+        <div class="header">
             <h1>🌟 متتبع الإحسان</h1>
             <p>رحلتك في المنازل السبعة للإحسان</p>
             <div id="install-prompt" class="install-prompt">
@@ -643,224 +605,6 @@
                 document.getElementById('install-prompt').classList.remove('show');
             }
         });
-
-        // === TRANSLATION SYSTEM ===
-        const translations = {
-            ar: {
-                dir: "rtl", lang: "ar",
-                title: "متتبع الإحسان - المنازل السبعة",
-                header_title: "متتبع الإحسان",
-                header_subtitle: "رحلتك في المنازل السبعة للإحسان",
-                tab_daily: "التقييم اليومي",
-                tab_weekly: "التقييم الشامل",
-                save_daily: "حفظ التقييم اليومي",
-                save_weekly: "حفظ التقييم الشامل",
-                save_goals: "حفظ الأهداف",
-                daily_title: "التقييم اليومي",
-                weekly_title: "التقييم الشامل للمنازل السبعة",
-                progress_title: "تقدمك في المنازل السبعة",
-                goals_title: "أهدافك وخططك",
-                history_title: "سجل التقييمات",
-                spiritual: "الجانب الروحي",
-                moral: "الجانب الأخلاقي",
-                life: "الجانب الحياتي",
-                general: "أسئلة عامة",
-                days: "أيام التقييم",
-                avg: "متوسط الأداء",
-                strongest: "أقوى منزلة",
-                improve: "تحتاج تحسين",
-                weekly_goal: "الهدف الأسبوعي",
-                notes: "ملاحظات شخصية",
-                goal_placeholder: "ما هو هدفك الرئيسي هذا الأسبوع؟",
-                notes_placeholder: "اكتب ملاحظاتك وأفكارك...",
-                plan_placeholder: "اكتب خطتك لتحسين هذه المنزلة...",
-                empty_history: "لا توجد سجلات بعد",
-                empty_subtitle: "ابدأ بتقييم نفسك يومياً!",
-                daily_assess: "تقييم يومي",
-                weekly_assess: "تقييم شامل",
-                questions: "سؤال",
-                alert_answer: "من فضلك أجب على بعض الأسئلة أولاً",
-                alert_saved_daily: "تم حفظ تقييمك اليومي!",
-                alert_score: "نتيجتك:",
-                alert_saved_weekly: "تم حفظ تقييمك الشامل!",
-                alert_overall: "نتيجتك الإجمالية:",
-                alert_weakest: "المنزلة الأضعف:",
-                alert_focus: "ركز على تحسين هذه المنزلة الأسبوع القادم",
-                alert_goals: "تم حفظ أهدافك بنجاح!",
-                excellent: "ممتاز! بارك الله فيك",
-                good: "جيد، واصل التحسن",
-                fair: "هناك مجال للتحسين",
-                poor: "ابدأ بخطوات صغيرة وستتحسن بإذن الله",
-                stations: {
-                    "التقوى": "التقوى",
-                    "التوكل": "التوكل",
-                    "التسليم": "التسليم",
-                    "الرضا": "الرضا",
-                    "اليقين": "اليقين"
-                }
-            },
-            en: {
-                dir: "ltr", lang: "en",
-                title: "Ihsan Tracker - Seven Stations",
-                header_title: "Ihsan Tracker",
-                header_subtitle: "Your Journey Through the Seven Stations",
-                tab_daily: "Daily",
-                tab_weekly: "Comprehensive",
-                save_daily: "Save Daily Assessment",
-                save_weekly: "Save Comprehensive Assessment",
-                save_goals: "Save Goals",
-                daily_title: "Daily Assessment",
-                weekly_title: "Comprehensive Assessment",
-                progress_title: "Your Progress",
-                goals_title: "Your Goals",
-                history_title: "History",
-                spiritual: "Spiritual Aspect",
-                moral: "Moral Aspect",
-                life: "Life Aspect",
-                general: "General Questions",
-                days: "Days Assessed",
-                avg: "Average",
-                strongest: "Strongest",
-                improve: "Needs Work",
-                weekly_goal: "Weekly Goal",
-                notes: "Personal Notes",
-                goal_placeholder: "What is your main goal this week?",
-                notes_placeholder: "Write your notes...",
-                plan_placeholder: "Write your plan to improve...",
-                empty_history: "No records yet",
-                empty_subtitle: "Start assessing daily!",
-                daily_assess: "Daily",
-                weekly_assess: "Comprehensive",
-                questions: "questions",
-                alert_answer: "Please answer some questions first",
-                alert_saved_daily: "Daily assessment saved!",
-                alert_score: "Your score:",
-                alert_saved_weekly: "Comprehensive assessment saved!",
-                alert_overall: "Overall score:",
-                alert_weakest: "Weakest station:",
-                alert_focus: "Focus on this next week",
-                alert_goals: "Goals saved!",
-                excellent: "Excellent! May Allah bless you",
-                good: "Good, keep improving",
-                fair: "Room for improvement",
-                poor: "Start small, you'll improve",
-                stations: {
-                    "التقوى": "Taqwa",
-                    "التوكل": "Tawakkul",
-                    "التسليم": "Tasleem",
-                    "الرضا": "Reda",
-                    "اليقين": "Yaqeen"
-                }
-            },
-            fr: {
-                dir: "ltr", lang: "fr",
-                title: "Suivi d'Ihsan - Sept Stations",
-                header_title: "Suivi d'Ihsan",
-                header_subtitle: "Votre voyage à travers les sept stations",
-                tab_daily: "Quotidien",
-                tab_weekly: "Complet",
-                save_daily: "Enregistrer quotidien",
-                save_weekly: "Enregistrer complet",
-                save_goals: "Enregistrer objectifs",
-                daily_title: "Évaluation quotidienne",
-                weekly_title: "Évaluation complète",
-                progress_title: "Votre progression",
-                goals_title: "Vos objectifs",
-                history_title: "Historique",
-                spiritual: "Aspect spirituel",
-                moral: "Aspect moral",
-                life: "Aspect de vie",
-                general: "Questions générales",
-                days: "Jours évalués",
-                avg: "Moyenne",
-                strongest: "Plus fort",
-                improve: "À améliorer",
-                weekly_goal: "Objectif hebdomadaire",
-                notes: "Notes personnelles",
-                goal_placeholder: "Quel est votre objectif principal?",
-                notes_placeholder: "Écrivez vos notes...",
-                plan_placeholder: "Écrivez votre plan...",
-                empty_history: "Aucun enregistrement",
-                empty_subtitle: "Commencez à évaluer!",
-                daily_assess: "Quotidien",
-                weekly_assess: "Complet",
-                questions: "questions",
-                alert_answer: "Répondez d'abord aux questions",
-                alert_saved_daily: "Évaluation enregistrée!",
-                alert_score: "Votre score:",
-                alert_saved_weekly: "Évaluation complète enregistrée!",
-                alert_overall: "Score global:",
-                alert_weakest: "Station la plus faible:",
-                alert_focus: "Concentrez-vous dessus",
-                alert_goals: "Objectifs enregistrés!",
-                excellent: "Excellent!",
-                good: "Bien, continuez",
-                fair: "À améliorer",
-                poor: "Commencez doucement",
-                stations: {
-                    "التقوى": "Taqwa",
-                    "التوكل": "Tawakkul",
-                    "التسليم": "Tasleem",
-                    "الرضا": "Reda",
-                    "اليقين": "Yaqeen"
-                }
-            }
-        };
-
-        let currentLang = localStorage.getItem('ihsan_language') || 'ar';
-
-        function t(key) {
-            return translations[currentLang][key] || key;
-        }
-
-        function getStationName(arabicName) {
-            return translations[currentLang].stations[arabicName] || arabicName;
-        }
-
-        function getCategoryName(catName) {
-            if (catName.includes('روحي')) return t('spiritual');
-            if (catName.includes('أخلاقي')) return t('moral');
-            if (catName.includes('حياتي')) return t('life');
-            return t('general');
-        }
-
-        function changeLanguage(lang) {
-            currentLang = lang;
-            localStorage.setItem('ihsan_language', lang);
-            document.documentElement.lang = translations[lang].lang;
-            document.documentElement.dir = translations[lang].dir;
-            document.title = translations[lang].title;
-            
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.getAttribute('data-lang') === lang) btn.classList.add('active');
-            });
-            
-            updateUI();
-        }
-
-        function updateUI() {
-            // Header
-            document.querySelector('.header h1').textContent = '🌟 ' + t('header_title');
-            document.querySelector('.header p').textContent = t('header_subtitle');
-            
-            // Tabs
-            const tabs = document.querySelectorAll('.tab');
-            tabs[0].innerHTML = '📅 ' + t('tab_daily');
-            tabs[1].innerHTML = '📊 ' + t('tab_weekly');
-            tabs[2].innerHTML = '📈 ' + 'Progress';
-            tabs[3].innerHTML = '🎯 ' + 'Goals';
-            tabs[4].innerHTML = '📚 ' + 'History';
-            
-            // Re-render content
-            renderDailyQuestions();
-            renderWeeklyAssessment();
-            renderProgress();
-            renderGoals();
-        changeLanguage(currentLang);
-            renderHistory();
-        }
-
 
         // Seven Stations Data - من أكاديمية الإحسان
         const stations = [
@@ -1051,7 +795,6 @@
                 renderHistory();
             } else if (tabName === 'goals') {
                 renderGoals();
-        changeLanguage(currentLang);
             }
         }
 
@@ -1166,7 +909,7 @@
             const answeredCount = Object.keys(dailyData).length;
             
             if (answeredCount === 0) {
-                alert('⚠️ ' + t('alert_answer'));
+                alert('⚠️ من فضلك أجب على بعض الأسئلة أولاً');
                 return;
             }
             
@@ -1187,11 +930,11 @@
             
             saveData();
             
-            alert(`✅ ${t('alert_saved_daily')}\n\n${t('alert_score')} ${percentage}%\n\n${
-                percentage >= 80 ? t('excellent') :
-                percentage >= 60 ? t('good') :
-                percentage >= 40 ? t('fair') :
-                t('poor')
+            alert(`✅ تم حفظ تقييمك اليومي!\n\nنتيجتك: ${percentage}%\n\n${
+                percentage >= 80 ? '🌟 ممتاز! بارك الله فيك' :
+                percentage >= 60 ? '👍 جيد، واصل التحسن' :
+                percentage >= 40 ? '💪 هناك مجال للتحسين' :
+                '📚 ابدأ بخطوات صغيرة وستتحسن بإذن الله'
             }`);
         }
 
@@ -1201,7 +944,7 @@
             const answeredCount = Object.keys(answers).length;
             
             if (answeredCount === 0) {
-                alert('⚠️ ' + t('alert_answer'));
+                alert('⚠️ من فضلك أجب على بعض الأسئلة أولاً');
                 return;
             }
             
@@ -1246,7 +989,7 @@
             const sortedStations = Object.entries(stationScores).sort((a, b) => a[1] - b[1]);
             const weakest = sortedStations[0] || ['', 0];
             
-            alert(`✅ ${t('alert_saved_weekly')}\n\n${t('alert_overall')} ${percentage}%\n\n${t('alert_weakest')} ${getStationName(weakest[0])} (${weakest[1]}%)\n\n💡 ${t('alert_focus')}`);
+            alert(`✅ تم حفظ تقييمك الشامل!\n\nنتيجتك الإجمالية: ${percentage}%\n\nالمنزلة الأضعف: ${weakest[0]} (${weakest[1]}%)\n\n💡 ركز على تحسين هذه المنزلة الأسبوع القادم`);
         }
 
         function calculateProgress() {
@@ -1352,7 +1095,7 @@
             });
             
             saveData();
-            alert('✅ ' + t('alert_goals'));
+            alert('✅ تم حفظ أهدافك بنجاح!');
         }
 
         function renderHistory() {
@@ -1411,7 +1154,6 @@
         renderDailyQuestions();
         renderWeeklyAssessment();
         renderGoals();
-        changeLanguage(currentLang);
     </script>
 </body>
 </html>
